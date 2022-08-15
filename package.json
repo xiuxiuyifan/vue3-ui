@@ -1,0 +1,17 @@
+{
+  "name": "z-vue3-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@z-vue3-ui/components": "workspace:^1.0.0",
+    "@z-vue3-ui/theme-chalk": "workspace:^1.0.0",
+    "@z-vue3-ui/utils": "workspace:^1.0.0"
+  }
+}

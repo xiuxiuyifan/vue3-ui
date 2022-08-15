@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+importers:
+
+  .:
+    specifiers:
+      '@z-vue3-ui/components': workspace:^1.0.0
+      '@z-vue3-ui/theme-chalk': workspace:^1.0.0
+      '@z-vue3-ui/utils': workspace:^1.0.0
+    dependencies:
+      '@z-vue3-ui/components': link:packages/components
+      '@z-vue3-ui/theme-chalk': link:packages/theme-chalk
+      '@z-vue3-ui/utils': link:packages/utils

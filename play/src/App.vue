@@ -1,9 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CashOutline } from "@vicons/ionicons5";
+</script>
 
 <template>
-  <div>test</div>
-  <z-icon color="red" size="80">999</z-icon>
-  <z-icon color="blue" size="50">666</z-icon>
+  <z-icon color="red" size="80">
+    <CashOutline></CashOutline>
+  </z-icon>
+  <z-icon color="blue" size="50">
+    <CashOutline></CashOutline>
+  </z-icon>
 </template>
 
 <style scoped></style>

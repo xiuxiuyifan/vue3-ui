@@ -3,6 +3,8 @@ import App from "./App.vue";
 import { createNamespace } from "@z-vue3-ui/utils/create";
 import Icon from "@z-vue3-ui/components/icon";
 
+import "@z-vue3-ui/theme-chalk/src/index.scss";
+
 const app = createApp(App);
 app.use(Icon);
 app.mount("#app");

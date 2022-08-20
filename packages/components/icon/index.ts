@@ -1,5 +1,5 @@
 import _Icon from './src/icon.vue';
-import { withInstall } from '../../utils/withInstall';
+import { withInstall } from '@z-vue3-ui/utils/withInstall';
 
 const Icon = withInstall(_Icon); // 生成带有 install 方法的组件
 

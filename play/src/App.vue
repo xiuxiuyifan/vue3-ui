@@ -4,14 +4,18 @@ import { ref } from 'vue';
 import { TreeNode } from '../../packages/components/tree/src/tree';
 
 // 先生成数据
-function createData(level = 1): any {
+function createData(level = 1, parentLabel = ''): any {
   if (level > 4) return [];
   const arr = Array<number>(10).fill(0);
   return arr.map((item, index) => {
+    // 当前的label 等于 父级的 label + index
+    const label = parentLabel
+      ? `${parentLabel}-${index + 1}`
+      : String(index + 1);
     return {
-      keyName: `${level}-${index}`,
-      labelName: genLabel(level),
-      childrenName: createData(level + 1),
+      keyName: label,
+      labelName: label,
+      childrenName: createData(level + 1, label),
     };
   });
 }
@@ -22,8 +26,8 @@ function genLabel(level: number) {
   if (level === 4) return '第四层';
   return '';
 }
+
 const data = ref(createData());
-console.log(data);
 </script>
 
 <template>

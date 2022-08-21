@@ -1,4 +1,4 @@
-@use "./mixins/imxins.scss" as *;
+@use './mixins/mixins.scss' as *;
 
 @include b(icon) {
   width: 1em;

@@ -1,0 +1,34 @@
+@use './mixins/mixins.scss' as *;
+
+@include b(tree) {
+}
+
+@include b('tree-node') {
+  padding: 5px;
+  font-size: 16px;
+  &:hover {
+    background: #f3f3f5;
+  }
+  @include e('expand-icon') {
+    display: inline-flex;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+    justify-content: center;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease-in;
+    &.is-leaf {
+      visibility: hidden;
+    }
+    &.expanded {
+      transform: rotate(90deg);
+    }
+    @include b(icon) {
+      svg {
+        fill: #767c82;
+      }
+    }
+  }
+}

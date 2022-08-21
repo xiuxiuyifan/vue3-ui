@@ -6,6 +6,8 @@ export interface TreeNode {
   key: string;
   label: string;
   children: TreeNode[];
+  level: number;
+  isLeaf: boolean;
 }
 
 export const treeProps = {
@@ -32,3 +34,21 @@ export const treeProps = {
 } as const;
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;
+
+// treeNode
+export const treeNodeProps = {
+  node: {
+    type: Object as PropType<TreeNode>,
+    required: true,
+  },
+  expanded: {
+    type: Boolean as PropType<boolean>,
+    required: true,
+  },
+} as const;
+
+export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
+
+export const treeNodeEmits = {
+  toggle: (node: TreeNode) => node,
+};

@@ -1,18 +1,29 @@
 import { PropType, ExtractPropTypes } from 'vue';
 
+export type Key = string | number;
+
+// 外部用户传递的 props 类型，可以松散一些
+export interface TreeOption {
+  key?: Key;
+  label?: Key;
+  children?: TreeOption[];
+  level?: number;
+  isLeaf?: boolean;
+  [key: string]: unknown;
+}
 // ts 的类型都用大写开始
 // js 的变量类型都使用 驼峰命名
-export interface TreeNode {
-  key: string;
-  label: string;
-  children: TreeNode[];
+
+// 这个类型是 tree data 内部必须要有的参数
+export interface TreeNode extends Required<TreeOption> {
+  rawNode: TreeOption;
   level: number;
-  isLeaf: boolean;
+  children: TreeNode[];
 }
 
 export const treeProps = {
   data: {
-    type: Array as PropType<TreeNode[]>,
+    type: Array as PropType<TreeOption[]>,
     required: true,
   },
   keyField: {
@@ -28,9 +39,14 @@ export const treeProps = {
     default: 'children',
   },
   defaultExpandKeys: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<Key[]>,
     default: () => [],
   },
+  // checkedKeys: {
+  //   type: Array as PropType<Key[]>,
+  // },
+  // 提供一个加载函数，在用户点击的时候，往 children下面添加孩子。
+  onLoad: Function as PropType<(node: TreeOption) => Promise<TreeOption[]>>,
 } as const;
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CashOutline } from '@vicons/ionicons5';
 import { ref } from 'vue';
-import { TreeNode } from '../../packages/components/tree/src/tree';
+import { TreeOption } from '../../packages/components/tree/src/tree';
 
 // 先生成数据
 function createData(level = 1, parentLabel = ''): any {
@@ -28,16 +28,60 @@ function genLabel(level: number) {
 }
 
 const data = ref(createData());
+
+function createData1(): TreeOption[] {
+  return [
+    {
+      label: nextLabel(),
+      key: 1,
+      isLeaf: false,
+    },
+    {
+      label: nextLabel(),
+      key: 2,
+      isLeaf: false,
+    },
+  ];
+}
+function nextLabel(currentLabel?: string | number): string {
+  if (!currentLabel) return 'Out of Tao, One is born';
+  if (currentLabel === 'Out of Tao, One is born') return 'Out of One, Two';
+  if (currentLabel === 'Out of One, Two') return 'Out of Two, Three';
+  if (currentLabel === 'Out of Two, Three') {
+    return 'Out of Three, the created universe';
+  }
+  if (currentLabel === 'Out of Three, the created universe') {
+    return 'Out of Tao, One is born';
+  }
+  return '';
+}
+const data1 = ref(createData1());
+
+// const checkedKeysRef = ref([]);
+
+function handleLoad(node: TreeOption) {
+  return new Promise<TreeOption[]>((resolve, reject) => {
+    setTimeout(() => {
+      resolve([
+        {
+          label: nextLabel(node.label),
+          key: `${node.key} + ${node.label}` || '',
+          isLeaf: false,
+        },
+      ]);
+    }, 1000);
+  });
+}
 </script>
 
 <template>
-  <z-icon color="red" size="80">
+  <z-icon color="red" size="30">
     <CashOutline />
   </z-icon>
-  <z-icon color="blue" size="50">
+  <z-icon color="blue" size="30">
     <CashOutline />
   </z-icon>
-
+  <hr />
   <div>
     <z-tree
       :data="data"
@@ -45,6 +89,10 @@ const data = ref(createData());
       label-field="labelName"
       children-field="childrenName"
     />
+  </div>
+  <hr />
+  <div>
+    <z-tree :data="data1" :on-load="handleLoad"></z-tree>
   </div>
 </template>
 

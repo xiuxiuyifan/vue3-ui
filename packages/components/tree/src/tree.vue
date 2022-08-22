@@ -3,6 +3,7 @@
     <template v-for="node in flattenTree" :key="node.key">
       <z-tree-node
         :node="node"
+        :loading-keys="loadingKeysRef"
         :expanded="isExpanded(node)"
         @toggle="toggleExpand"
       ></z-tree-node>

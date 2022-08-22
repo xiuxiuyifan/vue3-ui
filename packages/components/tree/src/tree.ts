@@ -61,6 +61,10 @@ export const treeNodeProps = {
     type: Boolean as PropType<boolean>,
     required: true,
   },
+  loadingKeys: {
+    type: Object as PropType<Set<Key>>,
+    required: true,
+  },
 } as const;
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;

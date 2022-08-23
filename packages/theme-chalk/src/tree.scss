@@ -4,10 +4,18 @@
 }
 
 @include b('tree-node') {
-  padding: 5px;
+  padding: 3px;
   font-size: 16px;
+  display: flex;
   &:hover {
+    cursor: pointer;
     background: #f3f3f5;
+  }
+  @include when(disabled) {
+    cursor: not-allowed;
+  }
+  @include when(selected) {
+    background: #18a0581a;
   }
   @include e('expand-icon') {
     display: inline-flex;
@@ -29,6 +37,14 @@
       svg {
         fill: #767c82;
       }
+    }
+  }
+  @include e(content) {
+    flex-grow: 1;
+    flex-shrink: 0;
+    @include when(disabled) {
+      cursor: not-allowed;
+      color: #c2c2c2;
     }
   }
 }

@@ -9,6 +9,7 @@ export interface TreeOption {
   children?: TreeOption[];
   level?: number;
   isLeaf?: boolean;
+  disabled?: boolean;
   [key: string]: unknown;
 }
 // ts 的类型都用大写开始
@@ -42,14 +43,24 @@ export const treeProps = {
     type: Array as PropType<Key[]>,
     default: () => [],
   },
-  // checkedKeys: {
-  //   type: Array as PropType<Key[]>,
-  // },
   // 提供一个加载函数，在用户点击的时候，往 children下面添加孩子。
   onLoad: Function as PropType<(node: TreeOption) => Promise<TreeOption[]>>,
+  selectedKeys: {
+    type: Array as PropType<Key[]>,
+  },
+  selectable: {
+    type: Boolean as PropType<boolean>,
+  },
+  multiple: {
+    type: Boolean as PropType<boolean>,
+  },
 } as const;
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;
+
+export const treeEmits = {
+  'update:selectedKeys': (keys: Key[]) => keys,
+};
 
 // treeNode
 export const treeNodeProps = {
@@ -65,10 +76,15 @@ export const treeNodeProps = {
     type: Object as PropType<Set<Key>>,
     required: true,
   },
+  selectedKeys: {
+    type: Array as PropType<Key[]>,
+    default: () => [],
+  },
 } as const;
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
 
 export const treeNodeEmits = {
   toggle: (node: TreeNode) => node,
+  select: (node: TreeNode) => node,
 };

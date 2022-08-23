@@ -5,23 +5,26 @@
         :node="node"
         :loading-keys="loadingKeysRef"
         :expanded="isExpanded(node)"
+        :selected-keys="selectedKeysRef"
         @toggle="toggleExpand"
+        @select="handleSelect"
       ></z-tree-node>
     </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { treeProps, TreeNode, TreeOption, Key } from './tree';
+import { treeProps, TreeNode, TreeOption, Key, treeEmits } from './tree';
 import { createNamespace } from '../../../utils/create';
 import { ref, computed, watch } from 'vue';
 import ZTreeNode from './tree-node.vue';
-import nodeTest from 'node:test';
+
 defineOptions({
   name: 'z-tree',
 });
 const bem = createNamespace('tree');
 const props = defineProps(treeProps);
+const emit = defineEmits(treeEmits);
 
 // 生成获取对应字段的方法
 
@@ -61,6 +64,7 @@ function createTree(data: TreeOption[], parent: TreeNode | null = null) {
       children: [],
       level: parent ? parent.level + 1 : 0,
       isLeaf: node.isLeaf ?? children.length === 0,
+      disabled: node.disabled ?? false,
     };
     if (children.length) {
       treeNode.children = createTree(children, treeNode);
@@ -154,5 +158,39 @@ function triggerLoading(node: TreeNode) {
       }
     }
   }
+}
+
+// 5. 实现节点选中
+const selectedKeysRef = ref<Key[]>([]);
+
+watch(
+  () => props.selectedKeys,
+  (keys) => {
+    if (keys) {
+      selectedKeysRef.value = keys;
+    }
+  },
+  { immediate: true },
+);
+
+function handleSelect(node: TreeNode) {
+  if (!props.selectable) return;
+  let keys = Array.from(selectedKeysRef.value);
+  if (props.multiple) {
+    // 如果在选中的节点里面
+    const index = keys.findIndex((key) => key === node.key);
+    if (~index) {
+      keys.splice(index, 1);
+    } else {
+      keys.push(node.key);
+    }
+  } else {
+    if (keys.includes(node.key)) {
+      keys = [];
+    } else {
+      keys = [node.key];
+    }
+  }
+  emit('update:selectedKeys', keys);
 }
 </script>

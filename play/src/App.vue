@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CashOutline } from '@vicons/ionicons5';
 import { ref } from 'vue';
-import { TreeOption } from '../../packages/components/tree/src/tree';
+import { TreeOption, Key } from '../../packages/components/tree/src/tree';
 
 // 先生成数据
 function createData(level = 1, parentLabel = ''): any {
@@ -72,27 +72,112 @@ function handleLoad(node: TreeOption) {
     }, 1000);
   });
 }
+
+const value = ref<Key[]>([]);
+const value1 = ref<Key[]>([]);
+
+// 节点禁用
+
+const data2 = [
+  {
+    key: '0',
+    label: '0',
+    children: [
+      {
+        key: '0-0',
+        label: '0-0',
+      },
+      {
+        disabled: true,
+        key: '0-1',
+        label: '0-1',
+        children: [
+          {
+            label: '0-1-0',
+            key: '0-1-0',
+          },
+          {
+            label: '0-1-1',
+            key: '0-1-1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    key: '1',
+    label: '1',
+    children: [
+      {
+        key: '1-0',
+        label: '1-0',
+      },
+      {
+        checkboxDisabled: true,
+        key: '1-1',
+        label: '1-1',
+        children: [
+          {
+            label: '1-1-0',
+            key: '1-1-0',
+          },
+          {
+            label: '1-1-1',
+            key: '1-1-1',
+          },
+        ],
+      },
+    ],
+  },
+];
+
+// 节点选中
 </script>
 
 <template>
+  <h3>icon组件</h3>
+  <hr />
   <z-icon color="red" size="30">
     <CashOutline />
   </z-icon>
   <z-icon color="blue" size="30">
     <CashOutline />
   </z-icon>
+  <h3>tree组件</h3>
   <hr />
+  <div>{{ value }}</div>
   <div>
     <z-tree
       :data="data"
       key-field="keyName"
       label-field="labelName"
       children-field="childrenName"
+      selectable
+      v-model:selected-keys="value"
     />
   </div>
+  <h3>tree 异步加载</h3>
   <hr />
   <div>
     <z-tree :data="data1" :on-load="handleLoad"></z-tree>
+  </div>
+  <h3>tree 节点选择</h3>
+  <div>{{ value1 }}</div>
+  <div>
+    <z-tree
+      :data="data"
+      key-field="keyName"
+      label-field="labelName"
+      children-field="childrenName"
+      selectable
+      multiple
+      v-model:selected-keys="value1"
+    ></z-tree>
+  </div>
+  <h3>tree 节点禁用</h3>
+  <hr />
+  <div>
+    <z-tree :data="data2"></z-tree>
   </div>
 </template>
 

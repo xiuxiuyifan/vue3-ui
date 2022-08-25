@@ -143,7 +143,7 @@ const data2 = [
   <z-icon color="blue" size="30">
     <CashOutline />
   </z-icon>
-  <h3>tree组件</h3>
+  <!-- <h3>tree组件</h3>
   <hr />
   <div>{{ value }}</div>
   <div>
@@ -173,11 +173,15 @@ const data2 = [
       multiple
       v-model:selected-keys="value1"
     ></z-tree>
-  </div>
+  </div> -->
   <h3>tree 节点禁用</h3>
   <hr />
   <div>
-    <z-tree :data="data2"></z-tree>
+    <z-tree :data="data2">
+      <template #default="{ node }">
+        key:{{ node.key }} - label:{{ node.label }}
+      </template>
+    </z-tree>
   </div>
 </template>
 

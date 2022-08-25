@@ -14,9 +14,16 @@
 </template>
 
 <script lang="ts" setup>
-import { treeProps, TreeNode, TreeOption, Key, treeEmits } from './tree';
+import {
+  treeProps,
+  TreeNode,
+  TreeOption,
+  Key,
+  treeEmits,
+  treeInjectKey,
+} from './tree';
 import { createNamespace } from '../../../utils/create';
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, provide, useSlots } from 'vue';
 import ZTreeNode from './tree-node.vue';
 
 defineOptions({
@@ -193,4 +200,8 @@ function handleSelect(node: TreeNode) {
   }
   emit('update:selectedKeys', keys);
 }
+
+provide(treeInjectKey, {
+  slots: useSlots(),
+});
 </script>

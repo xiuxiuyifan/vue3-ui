@@ -1,4 +1,4 @@
-import { PropType, ExtractPropTypes } from 'vue';
+import { PropType, ExtractPropTypes, SetupContext, InjectionKey } from 'vue';
 
 export type Key = string | number;
 
@@ -88,3 +88,9 @@ export const treeNodeEmits = {
   toggle: (node: TreeNode) => node,
   select: (node: TreeNode) => node,
 };
+
+export interface TreeContent {
+  slots: SetupContext['slots'];
+}
+
+export const treeInjectKey: InjectionKey<TreeContent> = Symbol();

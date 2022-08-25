@@ -22,16 +22,17 @@
       </z-icon>
     </span>
     <span :class="[bem.e('content'), bem.is('disabled', isDisabled)]">
-      {{ node.label }}
+      <tree-node-content :node="node"></tree-node-content>
     </span>
   </div>
 </template>
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { treeNodeProps, treeNodeEmits } from './tree';
 import { createNamespace } from '../../../utils/create';
 import Switcher from './icon/Switcher';
 import Loading from './icon/Loading';
-import { computed } from 'vue';
+import treeNodeContent from './tree-node-content';
 
 const props = defineProps(treeNodeProps);
 

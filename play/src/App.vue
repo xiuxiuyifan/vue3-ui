@@ -132,6 +132,10 @@ const data = ref(createData());
 // ];
 
 // 节点选中
+
+// checkbox
+
+const checked = ref(false);
 </script>
 
 <template>
@@ -183,8 +187,11 @@ const data = ref(createData());
       label-field="labelName"
       children-field="childrenName"
     ></z-tree>
-    <div>hihihi</div>
   </div>
+
+  <hr />
+  <div>checkbox组件</div>
+  <z-checkbox v-model:checked="checked" label="复选框"></z-checkbox>
 </template>
 
 <style scoped></style>

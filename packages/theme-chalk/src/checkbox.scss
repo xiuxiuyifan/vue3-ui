@@ -1,0 +1,37 @@
+@use './mixins/mixins.scss' as *;
+
+@include b(checkbox) {
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  @include e(wrapper) {
+    position: relative;
+  }
+  @include e(box) {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #e0e0e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include when(checked) {
+      background: #18a058;
+      svg {
+        fill: #fff;
+        visibility: unset;
+      }
+    }
+    svg {
+      width: 14px;
+      height: 14px;
+      visibility: hidden;
+    }
+  }
+  @include e(label) {
+    cursor: pointer;
+    font-size: 14px;
+    color: #333639;
+    padding: 0 8px;
+    line-height: 1.6;
+  }
+}

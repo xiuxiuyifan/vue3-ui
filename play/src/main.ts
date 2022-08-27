@@ -3,12 +3,14 @@ import App from './App.vue';
 import { createNamespace } from '@z-vue3-ui/utils/create';
 import Icon from '@z-vue3-ui/components/icon';
 import Tree from '@z-vue3-ui/components/tree';
+import Checkbox from '@z-vue3-ui/components/checkbox';
 
 import '@z-vue3-ui/theme-chalk/src/index.scss';
 
 const app = createApp(App);
 app.use(Icon);
 app.use(Tree);
+app.use(Checkbox);
 app.mount('#app');
 
 const bem = createNamespace('icon');

@@ -1,15 +1,17 @@
 <template>
   <div :class="bem.b()">
-    <template v-for="node in flattenTree" :key="node.key">
-      <z-tree-node
-        :node="node"
-        :loading-keys="loadingKeysRef"
-        :expanded="isExpanded(node)"
-        :selected-keys="selectedKeysRef"
-        @toggle="toggleExpand"
-        @select="handleSelect"
-      ></z-tree-node>
-    </template>
+    <z-virtual-list :flat-tree="flattenTree">
+      <template #default="{ node }">
+        <z-tree-node
+          :node="node"
+          :loading-keys="loadingKeysRef"
+          :expanded="isExpanded(node)"
+          :selected-keys="selectedKeysRef"
+          @toggle="toggleExpand"
+          @select="handleSelect"
+        ></z-tree-node>
+      </template>
+    </z-virtual-list>
   </div>
 </template>
 
@@ -25,6 +27,7 @@ import {
 import { createNamespace } from '../../../utils/create';
 import { ref, computed, watch, provide, useSlots } from 'vue';
 import ZTreeNode from './tree-node.vue';
+import ZVirtualList from '@z-vue3-ui/components/virtual-list';
 
 defineOptions({
   name: 'z-tree',
@@ -115,7 +118,7 @@ const flattenTree = computed(() => {
   return result;
 });
 
-// 切换展开和收起状态
+// // 切换展开和收起状态
 function expand(node: TreeNode) {
   expandedKeysSet.value.add(node.key);
   // 展开的时候调用异步加载的逻辑

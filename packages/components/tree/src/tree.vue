@@ -3,12 +3,18 @@
     <z-virtual-list :flat-tree="flattenTree">
       <template #default="{ node }">
         <z-tree-node
+          :key="node.key"
           :node="node"
           :loading-keys="loadingKeysRef"
           :expanded="isExpanded(node)"
           :selected-keys="selectedKeysRef"
+          :checked="isChecked(node)"
+          :disabled="isDisabled(node)"
+          :indeterminate="false"
+          show-checkbox
           @toggle="toggleExpand"
           @select="handleSelect"
+          @check="toggleCheck"
         ></z-tree-node>
       </template>
     </z-virtual-list>
@@ -25,7 +31,7 @@ import {
   treeInjectKey,
 } from './tree';
 import { createNamespace } from '../../../utils/create';
-import { ref, computed, watch, provide, useSlots } from 'vue';
+import { ref, computed, watch, provide, useSlots, onMounted } from 'vue';
 import ZTreeNode from './tree-node.vue';
 import ZVirtualList from '@z-vue3-ui/components/virtual-list';
 
@@ -35,6 +41,10 @@ defineOptions({
 const bem = createNamespace('tree');
 const props = defineProps(treeProps);
 const emit = defineEmits(treeEmits);
+
+provide(treeInjectKey, {
+  slots: useSlots(),
+});
 
 // 生成获取对应字段的方法
 
@@ -204,7 +214,52 @@ function handleSelect(node: TreeNode) {
   emit('update:selectedKeys', keys);
 }
 
-provide(treeInjectKey, {
-  slots: useSlots(),
+function isDisabled(node: TreeNode) {
+  return Boolean(node.disabled);
+}
+
+const checkedKeysRef = ref<Set<Key>>(new Set(props.defaultCheckedKeys));
+
+function isChecked(node: TreeNode) {
+  return checkedKeysRef.value.has(node.key);
+}
+
+// 自顶向下更新
+function toggle(node: TreeNode, checked: boolean) {
+  if (!node) return;
+  // 如果是选中就添加，否则删除
+  const checkedKeys = checkedKeysRef.value;
+  if (checked) {
+    checkedKeys.add(node.key);
+  } else {
+    checkedKeys.delete(node.key);
+  }
+  // 检测是否有儿子，如果有则递归更新
+  const children = node.children;
+  if (children && children.length) {
+    children.forEach((childNode) => {
+      toggleCheck(childNode, checked);
+    });
+  }
+}
+
+function toggleCheck(node: TreeNode, checked: boolean) {
+  toggle(node, checked);
+}
+
+// 根据 key 查找 node
+
+function fineNode(key: Key) {
+  return flattenTree.value.find((node) => node.key === key);
+}
+
+onMounted(() => {
+  // 遍历默认选中的 keys
+  props.defaultCheckedKeys?.forEach((key) => {
+    const node = fineNode(key);
+    if (node) {
+      toggleCheck(node, true);
+    }
+  });
 });
 </script>

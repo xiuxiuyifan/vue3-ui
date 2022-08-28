@@ -186,12 +186,14 @@ const checked = ref(false);
       key-field="keyName"
       label-field="labelName"
       children-field="childrenName"
+      show-checkbox
+      :default-checked-keys="['1', '2']"
     ></z-tree>
   </div>
 
   <hr />
   <div>checkbox组件</div>
-  <z-checkbox v-model:checked="checked" label="复选框"></z-checkbox>
+  <z-checkbox v-model="checked" label="复选框"></z-checkbox>
 </template>
 
 <style scoped></style>

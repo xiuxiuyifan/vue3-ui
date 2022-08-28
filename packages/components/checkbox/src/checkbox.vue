@@ -1,7 +1,7 @@
 <template>
   <div :class="[bem.b()]" @click="handleClick">
     <div :class="[bem.e('wrapper')]">
-      <div :class="[bem.e('box'), bem.is('checked', checked)]">
+      <div :class="[bem.e('box'), bem.is('checked', modelValue)]">
         <checked></checked>
       </div>
     </div>
@@ -20,7 +20,7 @@ defineOptions({
 });
 
 const props = defineProps({
-  checked: {
+  modelValue: {
     type: Boolean as PropType<boolean>,
     default: false,
   },
@@ -28,10 +28,20 @@ const props = defineProps({
     type: String as PropType<string>,
     default: '',
   },
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
+  // 半选
+  indeterminate: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
 });
 
-const emit = defineEmits(['update:checked']);
+const emit = defineEmits(['update:modelValue', 'change']);
 const handleClick = () => {
-  emit('update:checked', !props.checked);
+  emit('update:modelValue', !props.modelValue);
+  emit('change', !props.modelValue);
 };
 </script>

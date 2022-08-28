@@ -54,6 +54,10 @@ export const treeProps = {
   multiple: {
     type: Boolean as PropType<boolean>,
   },
+  showCheckbox: Boolean as PropType<boolean>,
+  defaultCheckedKeys: {
+    type: Array as PropType<Key[]>,
+  },
 } as const;
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;
@@ -64,6 +68,7 @@ export const treeEmits = {
 
 // treeNode
 export const treeNodeProps = {
+  key: String as PropType<Key>,
   node: {
     type: Object as PropType<TreeNode>,
     required: true,
@@ -80,6 +85,13 @@ export const treeNodeProps = {
     type: Array as PropType<Key[]>,
     default: () => [],
   },
+  showCheckbox: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
+  checked: Boolean,
+  disabled: Boolean,
+  indeterminate: Boolean,
 } as const;
 
 export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
@@ -87,6 +99,7 @@ export type TreeNodeProps = ExtractPropTypes<typeof treeNodeProps>;
 export const treeNodeEmits = {
   toggle: (node: TreeNode) => node,
   select: (node: TreeNode) => node,
+  check: (node: TreeNode, val: boolean) => typeof val === 'boolean',
 };
 
 export interface TreeContent {

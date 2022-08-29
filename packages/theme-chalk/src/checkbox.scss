@@ -21,6 +21,11 @@
         visibility: unset;
       }
     }
+    @include when(indeterminate) {
+      svg {
+        visibility: unset;
+      }
+    }
     svg {
       width: 12px;
       height: 12px;

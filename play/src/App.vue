@@ -136,6 +136,13 @@ const data = ref(createData());
 // checkbox
 
 const checked = ref(false);
+const indeterminate = ref(true);
+
+const handleChange = (value: boolean) => {
+  if (value === false) {
+    indeterminate.value = false;
+  }
+};
 </script>
 
 <template>
@@ -193,7 +200,19 @@ const checked = ref(false);
 
   <hr />
   <div>checkbox组件</div>
-  <z-checkbox v-model="checked" label="复选框"></z-checkbox>
+  <div>{{ checked }}</div>
+  <z-checkbox
+    v-model="checked"
+    :indeterminate="indeterminate"
+    label="复选框"
+    @change="handleChange"
+  ></z-checkbox>
+  <!-- <button @click="">选中1</button> -->
+  <z-checkbox
+    v-model="checked"
+    :indeterminate="false"
+    label="复选框"
+  ></z-checkbox>
 </template>
 
 <style scoped></style>

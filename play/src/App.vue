@@ -5,8 +5,8 @@ import { TreeOption, Key } from '../../packages/components/tree/src/tree';
 
 // 先生成数据
 function createData(level = 1, parentLabel = ''): TreeOption[] {
-  if (level > 2) return [];
-  const arr = Array<number>(40).fill(0);
+  if (level > 4) return [];
+  const arr = Array<number>(10).fill(0);
   return arr.map((item, index) => {
     // 当前的label 等于 父级的 label + index
     const label = parentLabel

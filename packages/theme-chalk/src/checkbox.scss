@@ -22,7 +22,9 @@
       }
     }
     @include when(indeterminate) {
+      background: #18a058;
       svg {
+        fill: #fff;
         visibility: unset;
       }
     }

@@ -25,6 +25,7 @@
       v-if="showCheckbox"
       :disabled="disabled"
       :model-value="checked"
+      :indeterminate="indeterminate"
       @change="handleCheckChange"
     ></z-checkbox>
     <span :class="[bem.e('content'), bem.is('disabled', isDisabled)]">

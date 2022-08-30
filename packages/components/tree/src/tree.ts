@@ -20,6 +20,7 @@ export interface TreeNode extends Required<TreeOption> {
   rawNode: TreeOption;
   level: number;
   children: TreeNode[];
+  parentKey: Key | undefined;
 }
 
 export const treeProps = {

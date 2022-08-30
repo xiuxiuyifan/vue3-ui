@@ -1,5 +1,4 @@
 <template>
-  <div>{{ model }}---- {{ indeterminate }}</div>
   <div :class="[bem.b()]" @click="handleClick">
     <div :class="[bem.e('wrapper')]">
       <div

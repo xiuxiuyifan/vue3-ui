@@ -10,7 +10,7 @@
           :selected-keys="selectedKeysRef"
           :checked="isChecked(node)"
           :disabled="isDisabled(node)"
-          :indeterminate="false"
+          :indeterminate="isIndeterminate(node)"
           show-checkbox
           @toggle="toggleExpand"
           @select="handleSelect"
@@ -85,6 +85,7 @@ function createTree(data: TreeOption[], parent: TreeNode | null = null) {
       level: parent ? parent.level + 1 : 0,
       isLeaf: node.isLeaf ?? children.length === 0,
       disabled: node.disabled ?? false,
+      parentKey: parent?.key,
     };
     if (children.length) {
       treeNode.children = createTree(children, treeNode);
@@ -224,6 +225,12 @@ function isChecked(node: TreeNode) {
   return checkedKeysRef.value.has(node.key);
 }
 
+const indeterminateRef = ref<Set<Key>>(new Set());
+
+function isIndeterminate(node: TreeNode) {
+  return indeterminateRef.value.has(node.key);
+}
+
 // 自顶向下更新
 function toggle(node: TreeNode, checked: boolean) {
   if (!node) return;
@@ -231,6 +238,7 @@ function toggle(node: TreeNode, checked: boolean) {
   const checkedKeys = checkedKeysRef.value;
   if (checked) {
     checkedKeys.add(node.key);
+    indeterminateRef.value.delete(node.key);
   } else {
     checkedKeys.delete(node.key);
   }
@@ -238,13 +246,51 @@ function toggle(node: TreeNode, checked: boolean) {
   const children = node.children;
   if (children && children.length) {
     children.forEach((childNode) => {
-      toggleCheck(childNode, checked);
+      toggle(childNode, checked);
     });
+  }
+}
+
+// 自下向上更新  目的是为了控制父节点的 选中 和 半选 (重要)
+function updateCheckKeys(node: TreeNode) {
+  // 判断有没有父节点
+  if (node.parentKey) {
+    const parentNode = fineNode(node.parentKey);
+    if (parentNode) {
+      let allChecked = true;
+      let hasChecked = false;
+      const nodes = parentNode.children;
+      for (const node of nodes) {
+        // 如果选中的容器里面有当前节点，则说明子节点有选中的
+        if (checkedKeysRef.value.has(node.key)) {
+          hasChecked = true;
+        }
+        // 如果 半选的容器中有当前节点，则说明当前子节点半选， 其父节点就不能是选中的
+        else if (indeterminateRef.value.has(node.key)) {
+          allChecked = false;
+          hasChecked = true;
+        } else {
+          // 半选和选中的容器里面都没有，则父节点什么也没选中
+          allChecked = false;
+        }
+      }
+      // 如果子节点全部选中了，则就把父节点也添加到选中的容器中去，并从半选的容器中移除掉
+      if (allChecked) {
+        checkedKeysRef.value.add(parentNode.key);
+        indeterminateRef.value.delete(parentNode.key);
+      } else if (hasChecked) {
+        // 如果子节点有选中的，则说明父节点需要半选，把父节点加入到半选容器中，并从选中容器中删除
+        checkedKeysRef.value.delete(parentNode.key);
+        indeterminateRef.value.add(parentNode.key);
+      }
+      updateCheckKeys(parentNode);
+    }
   }
 }
 
 function toggleCheck(node: TreeNode, checked: boolean) {
   toggle(node, checked);
+  updateCheckKeys(node);
 }
 
 // 根据 key 查找 node

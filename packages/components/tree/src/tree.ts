@@ -107,4 +107,5 @@ export interface TreeContent {
   slots: SetupContext['slots'];
 }
 
+// 用来给 provide 左 key 的
 export const treeInjectKey: InjectionKey<TreeContent> = Symbol();

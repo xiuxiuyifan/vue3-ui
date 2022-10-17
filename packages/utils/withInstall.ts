@@ -1,4 +1,4 @@
-import { Plugin } from "vue";
+import { Plugin } from 'vue';
 
 export type withInstallSFC<T> = T & Plugin;
 

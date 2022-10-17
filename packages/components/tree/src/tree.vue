@@ -42,6 +42,7 @@ const bem = createNamespace('tree');
 const props = defineProps(treeProps);
 const emit = defineEmits(treeEmits);
 
+// 把tree组件的slot提供出去，方便后代组件使用
 provide(treeInjectKey, {
   slots: useSlots(),
 });
@@ -160,6 +161,7 @@ function isExpanded(node: TreeNode) {
 // 用来装正在加载节点的 key
 const loadingKeysRef = ref(new Set<Key>());
 
+// 如果传递了 onload 异步加载函数
 function triggerLoading(node: TreeNode) {
   // 判断当前点击的 node 节点是否可以调用异步加载函数
   if (!node.children.length && !node.isLeaf) {
